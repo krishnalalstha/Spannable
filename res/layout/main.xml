@@ -7,6 +7,7 @@
     <com.krishna.widget.CustomMultiAutoCompleteTextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"/>
+        android:id="@+id/editText" 
+        android:textColor="@android:color/black"/>
 
 </LinearLayout>

@@ -19,7 +19,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -160,7 +159,7 @@ public class CustomMultiAutoCompleteTextView extends MultiAutoCompleteTextView {
 					deleteFromHashMap(deletedString);
 
 			}
-			
+			//CustomMultiAutoCompleteTextView.this.getText().setSpan(new ForegroundColorSpan(Color.BLACK), 0, s.toString().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);	
 		}
 	};
 	
@@ -195,14 +194,11 @@ public class CustomMultiAutoCompleteTextView extends MultiAutoCompleteTextView {
 		}
 		SpannableStringBuilder ssb = new SpannableStringBuilder(s);
 		int cursorCurrentPoint = this.getSelectionEnd();
-		Log.i("cursorCurrentPoint", String.valueOf(cursorCurrentPoint));
-		Log.i("overallStringlength", String.valueOf(overallString.length()));
 		boolean addedFromFirst = cursorCurrentPoint < overallString.length();
 
 		ClickableSpan[] spans = ssb.getSpans(0,
 				addedFromFirst ? spanEnd : ssb.length(), ClickableSpan.class);
-		// int spanEnd =0;
-		Log.i("spansLength", String.valueOf(spans.length));
+	
 		boolean someUnknownChange = false;
 		if (spans.length > 0) {
 			ClickableSpan underlineSpan = spans[spans.length - 1];
@@ -210,8 +206,6 @@ public class CustomMultiAutoCompleteTextView extends MultiAutoCompleteTextView {
 			// int spanCheck = spanEnd+1;
 
 			ClickableSpan firstSpan = spans[0];
-			Log.i("FirstItemSpanEnd", String.valueOf(ssb.getSpanEnd(firstSpan)));
-			Log.i("SpanEnd", String.valueOf(spanEnd));
 			int k = 0;
 			for (int m = 0; m < spans.length; m++) {
 				ClickableSpan someSpan = spans[m];
@@ -394,11 +388,15 @@ public class CustomMultiAutoCompleteTextView extends MultiAutoCompleteTextView {
 		int j = startEnd[1];
 		isTextDeletedFromTouch = true;
 		isTextAdditionInProgress = true;
-		SpannableStringBuilder sb = new SpannableStringBuilder(
-				this.getText());
+		
+		final SpannableStringBuilder sb = new SpannableStringBuilder(this.getText()
+			);
+
+		
 		String deletedSubString = sb.subSequence(Math.min(i, j),
 				Math.max(i, j)).toString();
 		deleteFromHashMap(deletedSubString);
+		
 		boolean hasCommaAtLast = true;
 		try {
 			sb.subSequence(Math.min(i, j + 1), Math.max(i, j + 1))
@@ -406,19 +404,29 @@ public class CustomMultiAutoCompleteTextView extends MultiAutoCompleteTextView {
 		} catch (Exception e) {
 			hasCommaAtLast = false;
 		}
-
-		sb.replace(Math.min(i, hasCommaAtLast ? j + 1 : j),
+	
+	    sb.replace(Math.min(i, hasCommaAtLast ? j + 1 : j),
 				Math.max(i, hasCommaAtLast ? j + 1 : j), "");
-		this.setText(sb);
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				isTextAdditionInProgress = false;
-				stringLength = CustomMultiAutoCompleteTextView.this.getText().toString().length();
-				isTextDeletedFromTouch = false;
-				CustomMultiAutoCompleteTextView.this.setMovementMethod(LinkMovementMethod.getInstance());
+				CustomMultiAutoCompleteTextView.this.setText(sb);
+				new Handler().postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						
+						isTextAdditionInProgress = false;
+						stringLength = CustomMultiAutoCompleteTextView.this.getText().toString().length();
+						isTextDeletedFromTouch = false;
+						//Log.i("I am replacing text","I am replacing text 4");
+						CustomMultiAutoCompleteTextView.this.setMovementMethod(LinkMovementMethod.getInstance());
+					}
+				},50);
+				
 			}
-		}, 50);
+		}, 10);
 	}
 	
 	
