@@ -255,7 +255,7 @@ public class CustomMultiAutoCompleteTextView extends MultiAutoCompleteTextView {
 						ssb.replace(spanEnd, startIndex + 1, "");
 						this.setText(ssb);
 					} else {
-						if (userInputString.charAt(userInputString.length() - 1) == ',')
+						if (userInputString.charAt(userInputString.length() - 1) == ',' && spanEnd-1>=0 && startIndex-1>=0)
 							userInputString = overallString.substring(spanEnd - 1,
 									startIndex - 1);
 						
