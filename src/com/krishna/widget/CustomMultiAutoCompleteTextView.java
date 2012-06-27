@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
@@ -241,7 +242,7 @@ public class CustomMultiAutoCompleteTextView extends MultiAutoCompleteTextView {
 						}else if(startIndex>spanEnd){
 							//ssb.replace(someUnknownChange?spanEnd-1:spanEnd, someUnknownChange?startIndex-1:startIndex , "");
 							ssb.replace(spanEnd, startIndex , "");
-							this.setText(ssb);
+							
 				}
 				return;		
 			}else{
@@ -253,7 +254,7 @@ public class CustomMultiAutoCompleteTextView extends MultiAutoCompleteTextView {
 					String trimString = userInputString.trim();
 					if (trimString.length() == 0) {
 						ssb.replace(spanEnd, startIndex + 1, "");
-						this.setText(ssb);
+						
 					} else {
 						if (userInputString.charAt(userInputString.length() - 1) == ',' && spanEnd-1>=0 && startIndex-1>=0)
 							userInputString = overallString.substring(spanEnd - 1,
@@ -282,10 +283,10 @@ public class CustomMultiAutoCompleteTextView extends MultiAutoCompleteTextView {
 								ssb.setSpan(clickSpan, spanEnd, startIndex,
 										Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-								this.setText(ssb);
+								
 							} else {
 								ssb.replace(spanEnd, startIndex + 1, "");
-								this.setText(ssb);
+							
 							}
 						} else {
 						
@@ -310,7 +311,7 @@ public class CustomMultiAutoCompleteTextView extends MultiAutoCompleteTextView {
 							ssb.setSpan(clickSpan, spanEnd, startIndex,
 									Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-							this.setText(ssb);
+							
 						}
 					}
 					
@@ -318,19 +319,25 @@ public class CustomMultiAutoCompleteTextView extends MultiAutoCompleteTextView {
 					
 				}
 			}
-			
-			this.setSelection(this.getText().toString().length());
-			new Handler().postDelayed(new Runnable() {
+			setSpannableText(ssb);
 
-				public void run() {
-					resetFlags();
-
-				}
-			}, 50);
 			
 		}
 		
 		
+	}
+	
+	public void setSpannableText(final Spannable ssb){
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				CustomMultiAutoCompleteTextView.this.setText(ssb);
+				CustomMultiAutoCompleteTextView.this.setSelection(CustomMultiAutoCompleteTextView.this.getText().toString().length());
+				resetFlags();
+				
+			}
+		}, 20);
 	}
 	
 	
