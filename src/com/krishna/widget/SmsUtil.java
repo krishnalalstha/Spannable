@@ -72,11 +72,9 @@ public class SmsUtil {
 		Canvas c = new Canvas(b);
 		c.translate(-view.getScrollX(), -view.getScrollY());
 		view.draw(c);
-		view.setDrawingCacheEnabled(true);
-		Bitmap cacheBmp = view.getDrawingCache();
-		Bitmap viewBmp = cacheBmp.copy(Bitmap.Config.ARGB_8888, true);
-		view.destroyDrawingCache();
-		return new BitmapDrawable(viewBmp);
+		BitmapDrawable d = new BitmapDrawable(getContext().getResources(), b);
+		d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+		return d;
 
 	}
 
